@@ -9,6 +9,21 @@ public class NetTools {
 		if (verbose) {
 			System.out.println("Checking if the string: " + ipAddress + " has a valid IPv4 format.");
 		}
+		
+		//Checking the number of commas
+		int countSeparators = 0;
+		for (int i = 0; i < ipAddress.length(); i++) {
+			if (ipAddress.charAt(i) == '.') {
+				countSeparators++;
+			}
+		}
+		if (countSeparators != 3) {
+			if (verbose) {
+				System.out.println("IPv4 check failed: Does not have four octects");
+				System.out.println(countSeparators);
+			}
+			return false;
+		}
 
 		String[] ipAddressOctets = ipAddress.split("\\.");
 		int numberOfOctects = ipAddressOctets.length;
@@ -68,6 +83,18 @@ public class NetTools {
 		String maskBinary32bits = binary32bits(mask);
 		boolean transition = false;
 
+		if (maskBinary32bits.charAt(0)=='0') {
+			System.out.println("Invalid Mask!");
+			return false;
+		}
+		
+		//Wildcard mask is not accepted
+		if (maskBinary32bits.charAt(0)=='0') {
+			System.out.println("Invalid Mask!");
+			return false;
+		}
+		
+		
 		for (int i = 0; i < maskBinary32bits.length() - 1; i++) {
 			if (maskBinary32bits.charAt(i) != maskBinary32bits.charAt(i + 1)) {
 				if (transition == true) {
