@@ -5,7 +5,7 @@ public class NetTools {
 	public static boolean verbose = false;
 
 	public static boolean isIpv4(String ipAddress) {
-
+		
 		if (verbose) {
 			System.out.println("Checking if the string: " + ipAddress + " has a valid IPv4 format.");
 		}
@@ -43,12 +43,12 @@ public class NetTools {
 		// Convert the octect to Int
 		// Check if it is the range between 0 and 255
 
-		int number = 0;
+		int octectValue = 0;
 		int count = 0;
 
 		while (count < 4) {
 			try {
-				number = Integer.parseInt(ipAddressOctets[count]);
+				octectValue = Integer.parseInt(ipAddressOctets[count]);
 			} catch (NumberFormatException ex) {
 				ex.printStackTrace();
 				if (verbose) {
@@ -58,7 +58,7 @@ public class NetTools {
 				return false;
 			} finally {
 				count++;
-				if (number < 0 | number > 255) {
+				if (octectValue < 0 | octectValue > 255) {
 					if (verbose) {
 						System.out.println("IPv4 check failed: Octect #" + count + " out of range.");
 						return false;
@@ -139,17 +139,17 @@ public class NetTools {
 		return binary32bits;
 	}
 
-	public static String binaryAnd(String binary32bits1, String binary32bits2) {
+	public static String binaryAnd(String firstBinary32bits, String secondBinary32bits) {
 		// check if both entries are 32 bits long
-		if (binary32bits1.length() != 32 | binary32bits2.length() != 32) {
+		if (firstBinary32bits.length() != 32 | secondBinary32bits.length() != 32) {
 			return null;
 		}
 		String and = "";
-		int digit1, digit2;
+		int bitOfTheFirstInput, bitOfTheSecondInput;
 		for (int i = 0; i < 32; i++) {
-			digit1 = (Character.getNumericValue(binary32bits1.charAt(i)));
-			digit2 = (Character.getNumericValue(binary32bits2.charAt(i)));
-			and = and + Integer.toString(digit1 & digit2);
+			bitOfTheFirstInput = (Character.getNumericValue(firstBinary32bits.charAt(i)));
+			bitOfTheSecondInput = (Character.getNumericValue(secondBinary32bits.charAt(i)));
+			and = and + Integer.toString(bitOfTheFirstInput & bitOfTheSecondInput);
 		}
 		return and;
 	}
