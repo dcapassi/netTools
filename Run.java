@@ -7,12 +7,10 @@ public class Run {
 	public static void main(String[] args) {
 
 		String ipAddress;
-		NetTools.verbose = true;
 		ipAddress = "192.168.1.256.";
 		System.out.println(NetTools.isIpv4(ipAddress));
 		
 		String mask;
-		NetTools.verbose = true;
 		mask = "255.255.255.256";
 		System.out.println(NetTools.isAValidMask(mask));
 		
@@ -22,12 +20,10 @@ public class Run {
 		System.out.println(result);
 
 		String ipAddressV6;
-		NetTools.verbose = false;
 		ipAddressV6 = "192::1:2:3:4";
 		System.out.println(NetTools.isIpv6(ipAddressV6));
 		System.out.println(NetTools.ipv6Expansion(ipAddressV6));
 		
-		NetTools.verbose = true;
 		System.out.println(NetTools.isIpv4("192.168.1.1."));
 	}
 }

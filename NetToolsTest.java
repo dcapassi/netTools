@@ -19,14 +19,14 @@ class NetToolsTest {
 }
 	@Test
 	void testIsAValidMask() {
-		assertFalse(NetTools.isAValidMask("255.0.255.0"));
-		assertFalse(NetTools.isAValidMask("0.0.255.255"));
-		assertFalse(NetTools.isAValidMask("0.255.255.0"));
-		assertFalse(NetTools.isAValidMask("255.0.0.1"));
-		assertTrue(NetTools.isAValidMask("255.255.255.0"));
-		assertTrue(NetTools.isAValidMask("255.255.0.0"));
-		assertTrue(NetTools.isAValidMask("255.0.0.0"));
-		assertTrue(NetTools.isAValidMask("255.255.255.255"));
+		  assertFalse(NetTools.isAValidMask("255.0.255.0"));
+		  assertFalse(NetTools.isAValidMask("0.0.255.255"));
+		  assertFalse(NetTools.isAValidMask("0.255.255.0"));
+		  assertFalse(NetTools.isAValidMask("255.0.0.1"));
+		  assertTrue(NetTools.isAValidMask("255.255.255.0"));
+		  assertTrue(NetTools.isAValidMask("255.255.0.0"));
+		  assertTrue(NetTools.isAValidMask("255.0.0.0"));
+		  assertTrue(NetTools.isAValidMask("255.255.255.255")); 
 }
 	
 	

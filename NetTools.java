@@ -2,15 +2,23 @@ package netTools;
 
 public class NetTools {
 
-	public static boolean verbose = false;
 
 	public static boolean isIpv4(String ipAddress) {
-		
-		if (verbose) {
-			System.out.println("Checking if the string: " + ipAddress + " has a valid IPv4 format.");
-		}
-		
-		//Checking the number of commas
+
+		if (!ipAddressHasThreeDots(ipAddress))
+			return false;
+
+		if (!checkIfIpHasFourOctects(ipAddress))
+			return false;
+
+		if (!checkIfIsIntegerAndHasValidRange(ipAddress))
+			return false;
+
+		return true;
+	}
+
+	public static boolean ipAddressHasThreeDots(String ipAddress) {
+
 		int countSeparators = 0;
 		for (int i = 0; i < ipAddress.length(); i++) {
 			if (ipAddress.charAt(i) == '.') {
@@ -18,62 +26,53 @@ public class NetTools {
 			}
 		}
 		if (countSeparators != 3) {
-			if (verbose) {
-				System.out.println("IPv4 check failed: Does not have four octects");
-				System.out.println(countSeparators);
-			}
 			return false;
 		}
+		return true;
 
-		String[] ipAddressOctets = ipAddress.split("\\.");
+	}
+
+	public static boolean ipAddressHasFourOctects(String[] ipAddressOctets) {
+
 		int numberOfOctects = ipAddressOctets.length;
 
-		if (verbose) {
-			System.out.println("Number of Octects: " + numberOfOctects);
-		}
-
-		// Check if the string has four octects
-		if (numberOfOctects != 4) {
-			if (verbose) {
-				System.out.println("IPv4 check failed: Does not have four octects");
-			}
+		if (numberOfOctects != 4)
 			return false;
-		}
+		
+		return true;
+	}
 
-		// Convert the octect to Int
-		// Check if it is the range between 0 and 255
+	public static String[] getIpAddressOctects(String ipAddress) {
+		String[] ipAddressOctets = ipAddress.split("\\.");
+		return ipAddressOctets;
+	}
+
+	public static boolean checkIfIpHasFourOctects(String ipAddress) {
+		String[] ipAddressOctets = getIpAddressOctects(ipAddress);
+		return ipAddressHasFourOctects(ipAddressOctets);
+	}
+
+	public static boolean checkIfIsIntegerAndHasValidRange(String ipAddress) {
+
+		String[] ipAddressOctets = getIpAddressOctects(ipAddress);
 
 		int octectValue = 0;
 		int count = 0;
-
 		while (count < 4) {
 			try {
 				octectValue = Integer.parseInt(ipAddressOctets[count]);
 			} catch (NumberFormatException ex) {
-				ex.printStackTrace();
-				if (verbose) {
-					System.out.println("IPv4 check failed invalid entry");
-					return false;
-				}
 				return false;
 			} finally {
 				count++;
-				if (octectValue < 0 | octectValue > 255) {
-					if (verbose) {
-						System.out.println("IPv4 check failed: Octect #" + count + " out of range.");
-						return false;
-					}
+				if (octectValue < 0 | octectValue > 255) 
+					return false;
 				}
 			}
-		}
 		return true;
-	} // End of the isIpv4 method
+	}
 
 	public static boolean isAValidMask(String mask) {
-
-		// Check if the Mask has a valid Ipv4 format
-		// 4 Octects
-		// Numbers from 0 to 255
 
 		boolean isIpv4 = isIpv4(mask);
 		if (!isIpv4) {
@@ -83,22 +82,17 @@ public class NetTools {
 		String maskBinary32bits = binary32bits(mask);
 		boolean transition = false;
 
-		if (maskBinary32bits.charAt(0)=='0') {
-			System.out.println("Invalid Mask!");
+		if (maskBinary32bits.charAt(0) == '0') {
 			return false;
 		}
-		
-		//Wildcard mask is not accepted
-		if (maskBinary32bits.charAt(0)=='0') {
-			System.out.println("Invalid Mask!");
+
+		if (maskBinary32bits.charAt(0) == '0') {
 			return false;
 		}
-		
-		
+
 		for (int i = 0; i < maskBinary32bits.length() - 1; i++) {
 			if (maskBinary32bits.charAt(i) != maskBinary32bits.charAt(i + 1)) {
 				if (transition == true) {
-					System.out.println("Invalid Mask!");
 					return false;
 				} else {
 					transition = true;
@@ -227,34 +221,16 @@ public class NetTools {
 
 	public static boolean isIpv6(String ipAddress) {
 
-		if (verbose) {
-			System.out.println("Checking if the string: " + ipAddress + " has a valid IPv6 format.");
-		}
-
-		// Expanding the receivedAddress
 		ipAddress = ipv6Expansion(ipAddress);
 
-		if (ipAddress == null) {
+		if (ipAddress == null)
 			return false;
-		}
 
 		String[] ipAddressOctets = ipAddress.split("\\:");
 		int numberOfHextects = ipAddressOctets.length;
 
-		if (verbose) {
-			System.out.println("Number of Hextects: " + numberOfHextects);
-		}
-
-		// Check if the string has eight octects
-		if (numberOfHextects != 8) {
-			if (verbose) {
-				System.out.println("IPv6 check failed: Does not have four octects");
-			}
+		if (numberOfHextects != 8) 
 			return false;
-		}
-
-		// Convert the octect to Int
-		// Check if it is the range between 0 and 255
 
 		int number = 0;
 		int count = 0;
@@ -263,23 +239,14 @@ public class NetTools {
 			try {
 				number = Integer.parseInt(ipAddressOctets[count], 16);
 			} catch (NumberFormatException ex) {
-				// ex.printStackTrace();
-				if (verbose) {
-					System.out.println("IPv6 check failed invalid entry");
-					return false;
-				}
 				return false;
 			} finally {
 				count++;
-				if (number < 0 | number > 65535) {
-					if (verbose) {
-						System.out.println("IPv4 check failed: Hextect #" + count + " out of range.");
-						return false;
-					}
-				}
+				if (number < 0 | number > 65535)
+					return false;
 			}
 		}
 
 		return true;
 	}
-} 
+}
